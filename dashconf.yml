@@ -1,0 +1,19 @@
+webapp_path: /opt/graphite/webapp
+whisper_path: /opt/graphite/storage/whisper
+source_glob: collectd
+color_combined: 2f4f4f
+color_free: green
+carbon_server: GRAPHITE_SERVER_FQDN
+carbon_match: GRAPHITE_SERVER_NAME
+
+defaults:
+    width: 300
+    height: 200
+    until: now
+    fontName: Sans
+    interval: 60000
+    enabled: false
+    startTime: 8:00 AM
+    endTime: 6:00 PM
+    units: hours
+    quantity: 1
