@@ -16,4 +16,5 @@ defaults:
     startTime: 8:00 AM
     endTime: 6:00 PM
     units: hours
+    type: relative
     quantity: 1

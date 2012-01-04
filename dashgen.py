@@ -52,6 +52,7 @@ def dash_create(host, host_path, profile):
                 'startTime': defaults['startTime'],
                 'endTime': defaults['endTime'],
                 'quantity': defaults['quantity'],
+                'type': defaults['type'],
                 'units': defaults['units'],
                 },
             'graphSize': {
