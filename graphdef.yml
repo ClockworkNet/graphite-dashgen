@@ -7,7 +7,6 @@ Apache_Bytes:
 
 Apache_Connections_and_Requests:
     glob_verify: apache
-    hideLegend: true
     target:
     - 'substr(collectd.%(host)s.apache.apache_connections,3)'
     - 'substr(collectd.%(host)s.apache.apache_requests,3)'
