@@ -193,6 +193,7 @@ Memcached_Items:
 
 Memcached_Commands_and_Ops:
     glob_verify: memcached/command
+    areaMode: stacked
     hideLegend: false
     target:
     - 'substr(sortByMaxima(collectd.%(host)s.memcached.{command,ops}.*),4)'
