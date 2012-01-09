@@ -1,5 +1,5 @@
 Overview
-----------------------
+======================
 
 Graphite-dashgen automates the creation of host dashboards based on existing
 collectd_ metrics. Unlike the alternatives below,
@@ -9,7 +9,7 @@ this project seeks to use existing Graphite_ 0.9.9+ code.
 .. _Graphite: http://graphite.wikidot.com/
 
 Alternatives
-----------------------
+======================
 
 Note that these projects existed before Graphite included a dashboard view.
 
@@ -19,7 +19,7 @@ Note that these projects existed before Graphite included a dashboard view.
 - `Tattle <https://github.com/wayfair/Graphite-Tattle>`_
 
 Assumptions
-----------------------
+======================
 
 At least initially, Graphite-dashgen will cater to the following assumptions:
 
@@ -30,7 +30,7 @@ At least initially, Graphite-dashgen will cater to the following assumptions:
 .. _collectd-carbon: https://github.com/indygreg/collectd-carbon
 
 Crontab Example
-----------------------
+======================
 
 ::
 
@@ -43,7 +43,7 @@ Crontab Example
     @daily /usr/local/sbin/dashgen.py -q -c /usr/local/etc/dashgen/ all '*'
 
 Graph Definition Notes
-----------------------
+======================
 
 - Target entries are as close to web GUI as possible to make it easier to go
   back and forth
@@ -74,7 +74,7 @@ Graph Definition Notes
   always green (green should not be included in the template's ``lineColor``)
 
 To Do
-----------------------
+======================
 
 - More documentation!
 - Use templates with different colorList to easily differentiate graphs
@@ -83,13 +83,13 @@ To Do
   ``vda`` graphs before any ``vdb`` graphs)
 
 Contributors
-----------------------
+======================
 
 - https://github.com/TimBaldoni
 - https://github.com/insyte
 
 License
-----------------------
+======================
 
 Graphite-dashgen is licensed under the `BSD 2-Clause License
 <http://www.opensource.org/licenses/BSD-2-Clause>`_
