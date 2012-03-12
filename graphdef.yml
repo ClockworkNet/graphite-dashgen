@@ -397,4 +397,20 @@ Users:
     hideLegend: true
     yMin: 0
     target:
-    - 'substr(lineWidth(collectd.%(host)s.users,2),2)'
+    - 'substr(sortByMaxima(lineWidth(collectd.%(host)s.users,2),2)'
+
+# Varnish
+Varnish_Backend:
+    glob_verify: varnish/backend
+    target:
+    - 'substr(sortByMaxima(collectd.%(host)s.varnish.backend.*),4)'
+
+Varnish_Cache:
+    glob_verify: varnish/cache
+    target:
+    - 'substr(sortByMaxima(collectd.%(host)s.varnish.cache.*),4)'
+
+Varnish_Client:
+    glob_verify: varnish/client
+    target:
+    - 'substr(sortByMaxima(collectd.%(host)s.varnish.client.*),4)'

@@ -6,6 +6,9 @@ all:
     - Carbon_Cache_Points_per_update
     - Carbon_Cache_Queues
     - Carbon_Cache_Queries
+    - Varnish_Cache
+    - Varnish_Client
+    - Varnish_Backend
     - Apache_Bytes
     - Apache_Connections_and_Requests
     - Apache_Scoreboard
