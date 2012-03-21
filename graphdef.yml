@@ -397,7 +397,7 @@ Users:
     hideLegend: true
     yMin: 0
     target:
-    - 'substr(sortByMaxima(lineWidth(collectd.%(host)s.users,2),2)'
+    - 'substr(lineWidth(collectd.%(host)s.users,2),2)'
 
 # Varnish
 Varnish_Backend:
