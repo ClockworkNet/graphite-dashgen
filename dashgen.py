@@ -3,7 +3,8 @@
 from datetime import date
 import glob
 import json
-import logging, logging.handlers
+import logging
+import logging.handlers
 from optparse import OptionParser
 import os
 import sys
@@ -19,7 +20,7 @@ screenfmt = logging.Formatter('%(levelname)s %(message)s')
 screenhdlr.setFormatter(screenfmt)
 # Allows this code to be reloaded interactively without ending up with
 # multiple log handlers
-log.handlers = [ ]
+log.handlers = list()
 log.addHandler(screenhdlr)
 
 
@@ -45,7 +46,7 @@ def dash_create(host, host_path, profile):
                 'interval': defaults['interval'],
                 'enabled': defaults['enabled'],
                 },
-            'graphs': [ ],
+            'graphs': list(),
             'timeConfig': {
                 'startDate': today,
                 'endDate': today,
@@ -67,10 +68,10 @@ def dash_create(host, host_path, profile):
 def graph_create(host, host_path):
     """Create graph for specified host and dashboard profile
     """
-    graphs = [ ]
+    graphs = list()
     for name in dash_profile['graphs']:
         log.info("  Graph: %s" % name)
-        graph = [ ]
+        graph = list()
         # Skip undefined graphs
         if name not in graphdef.keys():
             log.error("%s not found in graphdef.yml" % name)
@@ -132,8 +133,8 @@ def graph_compile(host, name, graph_object, metric):
     color_free = dashconf['color_free']
     # target
     templates = graph_object.pop('target')
-    target_object = [ ]
-    target_pairs = [ ]
+    target_object = list()
+    target_pairs = list()
     for template in templates:
         target = template % {
                 'color_combined': color_combined,
@@ -151,7 +152,7 @@ def graph_compile(host, name, graph_object, metric):
                 }
     else:
         graph_object['title'] = name
-    graph_object['title'] = graph_object['title'].replace('-','.')
+    graph_object['title'] = graph_object['title'].replace('-', '.')
     # build graph_render
     graph_render = "/render?%s&%s" % (
             urllib.urlencode(graph_object),
@@ -159,7 +160,7 @@ def graph_compile(host, name, graph_object, metric):
             )
     # add target(s) to graph_object
     graph_object['target'] = target_object
-    return [ graph_targets, graph_object, graph_render, ]
+    return [graph_targets, graph_object, graph_render]
 
 
 def dash_save(dash):
@@ -231,7 +232,7 @@ def main():
     # Build hosts list
     host_parent_glob = "%s/%s" % (
             dashconf['whisper_path'], dashconf['source_glob'])
-    host_paths = [ ]
+    host_paths = list()
     for arg in args:
         for host_path in glob.iglob("%s/%s" % (host_parent_glob, arg)):
             host_path = os.path.abspath(host_path)
