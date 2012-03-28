@@ -281,12 +281,14 @@ MySQL_Octets:
 # NFS graphs
 NFS_Client:
     glob_verify: nfs/client
+    areaMode: stacked
     hideLegend: false
     target:
     - 'substr(sortByMaxima(highestAverage(collectd.%(host)s.nfs.client.*,6)),4)'
 
 NFS_Server:
     glob_verify: nfs/server
+    areaMode: stacked
     hideLegend: false
     target:
     - 'substr(sortByMaxima(highestAverage(collectd.%(host)s.nfs.server.*,6)),4)'
