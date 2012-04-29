@@ -11,7 +11,11 @@ this project seeks to use existing Graphite_ 0.9.9+ code.
 Alternatives
 ======================
 
-Note that these projects existed before Graphite included a dashboard view.
+A slightly different (and refreshing) take on Graphite dashboards:
+
+- `Tasseo <https://github.com/obfuscurity/tasseo>`_
+
+The following projects existed before Graphite included a dashboard view:
 
 - `Etsy Dashboards <https://github.com/etsy/dashboard>`_
 - `GDash <https://github.com/ripienaar/gdash>`_
