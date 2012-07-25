@@ -22,6 +22,11 @@ The following projects existed before Graphite included a dashboard view:
 - `Graphiti <https://github.com/paperlesspost/graphiti>`_
 - `Tattle <https://github.com/wayfair/Graphite-Tattle>`_
 
+The Graphite 0.9.10 documentation includes a good list of related software:
+
+- `Tools That Work With Graphite
+  <http://graphite.readthedocs.org/en/0.9.10/tools.html>`_
+
 Assumptions
 ======================
 

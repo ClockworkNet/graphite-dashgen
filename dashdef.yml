@@ -20,8 +20,6 @@ all:
     - Memcached_Octets
     - Memcached_Processes
     - Memcached_CPU_Time
-    - MySQL_Cache_Size
-    - MySQL_Cache_Result
     - MySQL_top_six_Commands
     - MySQL_Threads
     - MySQL_Locks
@@ -42,7 +40,6 @@ all:
     - NFS_Client
     - NFS_Server
     - Postfix_Inbound_Connections
-    #- Postfix_Outbound_Connections
     - Postfix_Queue_Size
     - Postfix_Status
     - Postfix_Delays
@@ -51,8 +48,8 @@ all:
     - Apache_Access_All_First_Byte
     - Apache_Access_All_Response
     - Apache_Access_All_Status
+    - Apache_Access_All_Status_Bad
     - NTP_Offset
     - Entropy
     - Users
     - Uptime
-    #- TCP

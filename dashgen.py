@@ -55,6 +55,13 @@ def dash_create(host, host_path, profile):
                 'quantity': defaults['quantity'],
                 'type': defaults['type'],
                 'units': defaults['units'],
+#
+# seems that the new time handling is less than complete
+#
+#                'relativeStartUnits': defaults['relativeStartUnits'],
+#                'relativeStartQuantity': defaults['relativeStartQuantity'],
+#                'relativeUntilUnits': defaults['relativeUntilUnits'],
+#                'relativeUntilQuantity': defaults['relativeUntilQuantity'],
                 },
             'graphSize': {
                 'width': defaults['width'],

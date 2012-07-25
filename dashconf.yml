@@ -7,10 +7,10 @@ carbon_server: GRAPHITE_SERVER_FQDN
 carbon_match: GRAPHITE_SERVER_NAME
 
 defaults:
-    width: 300
-    height: 200
+    width: 1000
+    height: 300
     until: now
-    fontName: Sans
+    fontName: FreeMono
     interval: 60000
     enabled: false
     startTime: 8:00 AM

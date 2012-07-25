@@ -1,23 +1,26 @@
 # Apache graphs
 Apache_Bytes:
     glob_verify: apache/apache_bytes.wsp
+    areaAlpha: 0.2
     hideLegend: true
+    yUnitSystem: binary
     target:
-    - 'substr(collectd.%(host)s.apache.apache_bytes,3)'
+    - 'stacked(collectd.%(host)s.apache.apache_bytes)'
 
 Apache_Connections_and_Requests:
     glob_verify: apache
     target:
-    - 'substr(collectd.%(host)s.apache.apache_connections,3)'
-    - 'substr(collectd.%(host)s.apache.apache_requests,3)'
+    - 'aliasByMetric(collectd.%(host)s.apache.apache_connections)'
+    - 'aliasByMetric(collectd.%(host)s.apache.apache_requests)'
 
 Apache_Scoreboard:
     glob_verify: apache/scoreboard
     hideLegend: false
+    areaAlpha: 0.8
     areaMode: stacked
     target:
-    - 'substr(sortByMaxima(maximumAbove(collectd.%(host)s.apache.scoreboard.[a-np-z]*,0.1)),4)'
-    - 'substr(color(collectd.%(host)s.apache.scoreboard.open,"%(color_free)s"),4)'
+    - 'aliasByMetric(sortByMinima(maximumAbove(collectd.%(host)s.apache.scoreboard.[a-np-z]*,0.1)))'
+    - 'aliasByMetric(color(collectd.%(host)s.apache.scoreboard.open,"%(color_free)s"))'
 
 
 # Apache Access All graphs (Tail graphs)
@@ -37,71 +40,86 @@ Apache_Access_All_Response:
 
 Apache_Access_All_Status:
     glob_verify: tail/access_log_all/status
+    hideLegend: false
+    vtitle: percent
+    yMin: 0
     target:
-    - 'substr(sortByMaxima(maximumAbove(collectd.%(host)s.tail.access_log_all.status.*,0.1)),5)'
+    - 'substr(sortByMaxima(scale(divideSeries(collectd.%(host)s.tail.access_log_all.status.{206,[3-5]*},collectd.%(host)s.tail.access_log_all.status.total),100)),5)'
+
+Apache_Access_All_Status_Bad:
+    glob_verify: tail/access_log_all/status
+    hideLegend: false
+    vtitle: percent
+    yMin: 0
+    target:
+    - 'substr(sortByMaxima(scale(divideSeries(collectd.%(host)s.tail.access_log_all.status.[4-5]*,collectd.%(host)s.tail.access_log_all.status.total),100)),5)'
+
 
 
 # Carbon graphs
 Carbon_Cache_Avg_Update_Time:
     carbon_match: true
+    areaAlpha: 0.2
     hideLegend: true
-    lineMode: connected
     target:
-    - 'substr(carbon.agents.%(host)s-a.avgUpdateTime,3)'
+    - 'stacked(keepLastValue(carbon.agents.%(host)s-a.avgUpdateTime))'
 
 Carbon_Cache_Errors:
     carbon_match: true
+    areaAlpha: 0.2
     hideLegend: true
-    lineMode: connected
     target:
-    - 'substr(lineWidth(carbon.agents.%(host)s-a.errors,2),3)'
+    - 'stacked(keepLastValue(carbon.agents.%(host)s-a.errors))'
 
 Carbon_Cache_Points_per_update:
     carbon_match: true
+    areaAlpha: 0.2
     hideLegend: true
-    lineMode: connected
+    lineMode: staircase
     target:
-    - 'substr(carbon.agents.%(host)s-a.pointsPerUpdate,3)'
+    - 'stacked(keepLastValue(carbon.agents.%(host)s-a.pointsPerUpdate))'
 
 Carbon_Cache_Queues:
     carbon_match: true
+    areaAlpha: 0.2
     hideLegend: true
-    lineMode: connected
     target:
-    - 'substr(carbon.agents.%(host)s-a.cache.queues,4)'
+    - 'stacked(keepLastValue(carbon.agents.%(host)s-a.cache.queues))'
 
 Carbon_Cache_Queries:
     carbon_match: true
+    areaAlpha: 0.2
     hideLegend: true
-    lineMode: connected
     target:
-    - 'substr(carbon.agents.%(host)s-a.cache.queries,4)'
+    - 'stacked(keepLastValue(carbon.agents.%(host)s-a.cache.queries))'
 
 Carbon_Metrics:
     carbon_match: true
     vtitle: points
-    lineMode: connected
     target:
-    - 'alias(carbon.aggregator.%(host)s-a.metricsReceived,"aggregator_received")'
-    - 'alias(carbon.agents.%(host)s-a.metricsReceived,"cache_received")'
-    - 'alias(carbon.agents.%(host)s-a.committedPoints,"cache_committed")'
+    - 'alias(keepLastValue(carbon.aggregator.%(host)s-a.metricsReceived),"aggregator_received")'
+    - 'alias(keepLastValue(carbon.agents.%(host)s-a.metricsReceived),"cache_received")'
+    - 'alias(keepLastValue(carbon.agents.%(host)s-a.committedPoints),"cache_committed")'
 
 
 # CPU graphs
 CPU:
     glob_verify: cpu
+    areaAlpha: 0.8
     areaMode: stacked
     target:
-    - 'sortByMaxima(maximumAbove(groupByNode(exclude(collectd.%(host)s.cpu.*.*,"idle"),4,"sumSeries"),0.1))'
+    - 'aliasSub(sortByMinima(groupByNode(transformNull(exclude(collectd.%(host)s.cpu.*.*,"idle"),0),4,"sumSeries")),", 0","")'
     - 'substr(color(sumSeries(collectd.%(host)s.cpu.*.idle),"%(color_free)s"),4)'
 
 
 # DF graphs
 DF:
+    areaAlpha: 0.8
     title: DF_%(metric)s
     glob_metrics: df/*
     glob_verify: .
     yMin: 0
+    yUnitSystem: binary
     target:
     - 'substr(stacked(collectd.%(host)s.df.%(metric)s.{used,reserved}),4)'
     - 'substr(color(stacked(collectd.%(host)s.df.%(metric)s.free),"%(color_free)s"),4)'
@@ -113,6 +131,7 @@ Disk_octets:
     title: Disk_%(metric)s_octets
     glob_metrics: disk/*
     glob_verify: octets
+    yUnitSystem: binary
     target:
     - 'alias(color(sumSeries(collectd.%(host)s.disk.%(metric)s.octets.*),"%(color_combined)s"),"combined")'
     - 'substr(collectd.%(host)s.disk.%(metric)s.octets.*,5)'
@@ -137,10 +156,13 @@ Disk_time:
 # Entropy graphs
 Entropy:
     glob_verify: entropy.wsp
-    hideLegend: true
+    areaAlpha: 0.2
+    hideLegend: false
+    yMax: 4096
     yMin: 0
+    yUnitSystem: binary
     target:
-    - 'substr(collectd.%(host)s.entropy,2)'
+    - 'cactiStyle(alias(stacked(collectd.%(host)s.entropy),""))'
 
 
 # Interface graphs
@@ -156,6 +178,7 @@ Interface_octets:
     title: Interface_%(metric)s_octets
     glob_metrics: interface/*
     glob_verify: octets
+    yUnitSystem: binary
     target:
     - 'alias(color(sumSeries(collectd.%(host)s.interface.%(metric)s.octets.*),"%(color_combined)s"),"combined")'
     - 'substr(collectd.%(host)s.interface.%(metric)s.octets.*,5)'
@@ -179,6 +202,7 @@ Load:
 
 # Memcached graphs
 Memcached_Cache:
+    areaAlpha: 0.8
     glob_verify: memcached/cache
     yMin: 0
     target:
@@ -187,33 +211,41 @@ Memcached_Cache:
 
 Memcached_Items:
     glob_verify: memcached/items.wsp
-    yMin: 0
-    target:
-    - 'substr(collectd.%(host)s.memcached.items,3)'
-
-Memcached_Commands_and_Ops:
-    glob_verify: memcached/command
-    areaMode: stacked
-    hideLegend: false
-    target:
-    - 'substr(sortByMaxima(collectd.%(host)s.memcached.{command,ops}.*),4)'
-
-Memcached_Connections:
-    glob_verify: memcached/connections.wsp
+    areaAlpha: 0.2
     hideLegend: true
     yMin: 0
     target:
-    - 'substr(collectd.%(host)s.memcached.connections,3)'
+    - 'stacked(collectd.%(host)s.memcached.items)'
+
+Memcached_Commands_and_Ops:
+    glob_verify: memcached/command
+    areaAlpha: 0.8
+    areaMode: stacked
+    hideLegend: false
+    target:
+    - 'substr(sortByMinima(collectd.%(host)s.memcached.{command,ops}.*),4)'
+
+Memcached_Connections:
+    glob_verify: memcached/connections.wsp
+    areaAlpha: 0.2
+    hideLegend: true
+    yMin: 0
+    target:
+    - 'stacked(collectd.%(host)s.memcached.connections)'
 
 Memcached_Hit_Ratio:
     glob_metrics: memcached
     glob_verify: hitratio.wsp
+    areaAlpha: 0.2
     hideLegend: true
+    yMax: 100
+    yMin: 0
     target:
-    - 'substr(collectd.%(host)s.memcached.hitratio,3)'
+    - 'stacked(collectd.%(host)s.memcached.hitratio)'
 
 Memcached_Octets:
     glob_verify: memcached/octets
+    yUnitSystem: binary
     target:
     - 'alias(color(sumSeries(collectd.%(host)s.memcached.octets.*),"%(color_combined)s"),"combined")'
     - 'substr(collectd.%(host)s.memcached.octets.*,4)'
@@ -226,20 +258,23 @@ Memcached_Processes:
 
 Memcached_CPU_Time:
     glob_verify: memcached/ps_cputime
+    areaAlpha: 0.8
     areaMode: stacked
     target:
-    - 'substr(sortByMaxima(collectd.%(host)s.memcached.ps_cputime.*),4)'
+    - 'substr(sortByMinima(collectd.%(host)s.memcached.ps_cputime.*),4)'
 
 
 # Memory graphs
 Memory:
     glob_verify: memory
+    areaAlpha: 0.8
     areaMode: stacked
     yMin: 0
+    yUnitSystem: binary
     target:
     # explicit metric names to ensure order
-    - 'substr(collectd.%(host)s.memory.{used,buffered,cached}*,3)'
-    - 'substr(color(collectd.%(host)s.memory.free,"%(color_free)s"),3)'
+    - 'aliasByMetric(collectd.%(host)s.memory.{used,buffered,cached})'
+    - 'aliasByMetric(color(collectd.%(host)s.memory.free,"%(color_free)s"))'
 
 
 # MySQL graphs
@@ -251,16 +286,18 @@ MySQL_Cache_Size:
 
 MySQL_Cache_Result:
     glob_verify: mysql/collectd_mon/cache_result
+    areaAlpha: 0.8
     areaMode: stacked
     target:
-    - 'substr(sortByMaxima(collectd.%(host)s.mysql.collectd_mon.cache_result.*),5)'
+    - 'substr(sortByMinima(collectd.%(host)s.mysql.collectd_mon.cache_result.*),5)'
 
 MySQL_top_six_Commands:
     glob_verify: mysql/collectd_mon/mysql_commands
+    areaAlpha: 0.8
     areaMode: stacked
     hideLegend: false
     target:
-    - 'substr(sortByMaxima(highestMax(collectd.%(host)s.mysql.collectd_mon.mysql_commands.*,6)),5)'
+    - 'substr(sortByMinima(highestMax(collectd.%(host)s.mysql.collectd_mon.mysql_commands.*,6)),5)'
 
 MySQL_Threads:
     glob_verify: mysql/collectd_mon/threads
@@ -274,6 +311,7 @@ MySQL_Locks:
 
 MySQL_Octets:
     glob_verify: mysql/collectd_mon/mysql_octets
+    yUnitSystem: binary
     target:
     - 'substr(collectd.%(host)s.mysql.collectd_mon.mysql_octets.*,5)'
 
@@ -281,17 +319,21 @@ MySQL_Octets:
 # NFS graphs
 NFS_Client:
     glob_verify: nfs/client
+    areaAlpha: 0.8
     areaMode: stacked
+    drawNullAsZero: true
     hideLegend: false
     target:
-    - 'substr(sortByMaxima(highestAverage(collectd.%(host)s.nfs.client.*,6)),4)'
+    - 'substr(sortByMinima(highestAverage(collectd.%(host)s.nfs.client.*,6)),4)'
 
 NFS_Server:
     glob_verify: nfs/server
+    areaAlpha: 0.8
     areaMode: stacked
+    drawNullAsZero: true
     hideLegend: false
     target:
-    - 'substr(sortByMaxima(highestAverage(collectd.%(host)s.nfs.server.*,6)),4)'
+    - 'substr(sortByMinima(highestAverage(collectd.%(host)s.nfs.server.*,6)),4)'
 
 
 # NTPd graphs
@@ -299,7 +341,7 @@ NTP_Offset:
     glob_verify: ntpd/time_offset
     target:
     # Limit reported hosts to first 4 IPs
-    - 'substr(limit(collectd.%(host)s.ntpd.time_offset.[0-9]*,4),4)'
+    - 'aliasSub(aliasByMetric(limit(collectd.%(host)s.ntpd.time_offset.[0-9]*,4)),"-",".")'
 
 
 # Postfix graphs (Exec and Tail graphs)
@@ -308,7 +350,7 @@ Postfix_Delays:
     drawNullAsZero: true
     target:
     - 'substr(collectd.%(host)s.tail.postfix.delay.total,5)'
-    - 'substr(sortByMaxima(maximumAbove(exclude(collectd.%(host)s.tail.postfix.delay.*,"total"),0.1)),5)'
+    - 'substr(sortByMaxima(transformNull(exclude(collectd.%(host)s.tail.postfix.delay.*,"total"),0)),5)'
 
 Postfix_Inbound_Connections:
     glob_verify: tail/postfix/conn-in
@@ -318,9 +360,11 @@ Postfix_Inbound_Connections:
 
 Postfix_Message_Size:
     glob_verify: tail/postfix/message-size.wsp
+    areaAlpha: 0.2
     hideLegend: true
+    yUnitSystem: binary
     target:
-    - 'substr(collectd.%(host)s.tail.postfix.message-size,4)'
+    - 'stacked(collectd.%(host)s.tail.postfix.message-size)'
 
 Postfix_Queue_Size:
     glob_verify: postfix/queue_length
@@ -338,8 +382,8 @@ Postfix_Outbound_Connections:
 Postfix_Rejected:
     glob_verify: tail/postfix/rejected
     target:
-    - 'substr(collectd.%(host)s.tail.postfix.rejected.total,5)'
-    - 'substr(sortByMaxima(maximumAbove(exclude(collectd.%(host)s.tail.postfix.rejected.*,"total"),0.1)),5)'
+    - 'aliasByMetric(collectd.%(host)s.tail.postfix.rejected.total)'
+    - 'sortByMaxima(exclude(aliasByMetric(collectd.%(host)s.tail.postfix.rejected.*),"total"))'
 
 Postfix_Status:
     glob_verify: tail/postfix/status
@@ -351,55 +395,52 @@ Postfix_Status:
 # Processes graphs
 Process_State:
     glob_verify: processes/ps_state
+    areaAlpha: 0.8
     areaMode: stacked
     target:
-    - 'substr(sortByMaxima(maximumAbove(exclude(collectd.%(host)s.processes.ps_state.*,"sleeping"),0.1)),4)'
+    - 'substr(sortByMinima(transformNull(exclude(collectd.%(host)s.processes.ps_state.*,"sleeping"),0)),4)'
     - 'substr(color(collectd.%(host)s.processes.ps_state.sleeping,"%(color_free)s"),4)'
 
 Process_Fork_Rate:
     glob_verify: processes/fork_rate.wsp
+    areaAlpha: 0.2
     hideLegend: true
     target:
-    - 'substr(collectd.%(host)s.processes.fork_rate,3)'
+    - 'stacked(collectd.%(host)s.processes.fork_rate)'
 
 
 # Swap graphs
 Swap:
     glob_verify: swap
+    areaAlpha: 0.8
     areaMode: stacked
     yMin: 0
+    yUnitSystem: binary
     target:
     - 'substr(collectd.%(host)s.swap.{used,cached},3)'
     - 'substr(color(collectd.%(host)s.swap.free,"%(color_free)s"),3)'
 
 
-# TCP Connectn graphs
-TCP:
-    title: TCP_%(metric)s
-    glob_metrics: tcpconns/*
-    glob_verify: .
-    hideLegend: false
-    yMin: 0
-    target:
-    - 'substr(sortByMaxima(maximumAbove(collectd.%(host)s.tcpconns.%(metric)s.*,0.1)),4)'
-
-
 # Uptime
 Uptime:
     glob_verify: uptime.wsp
+    areaAlpha: 0.2
     hideLegend: true
     vtitle: days
+    yMin: 0
     target:
-    - 'substr(lineWidth(scale(collectd.%(host)s.uptime,0.00001157),2),2)'
+    - 'stacked(scale(collectd.%(host)s.uptime,0.00001157))'
 
 
 # Users graphs
 Users:
     glob_verify: users.wsp
+    areaAlpha: 0.2
     hideLegend: true
     yMin: 0
     target:
-    - 'substr(lineWidth(collectd.%(host)s.users,2),2)'
+    - 'stacked(collectd.%(host)s.users)'
+    - 'color(collectd.%(host)s.users,"blue")'
 
 # Varnish
 Varnish_Backend:
