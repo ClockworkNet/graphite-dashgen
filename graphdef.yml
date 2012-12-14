@@ -44,7 +44,7 @@ Apache_Access_All_Status:
     vtitle: percent
     yMin: 0
     target:
-    - 'substr(sortByMaxima(scale(divideSeries(collectd.%(host)s.tail.access_log_all.status.{206,[3-5]*},collectd.%(host)s.tail.access_log_all.status.total),100)),5)'
+    - 'substr(asPercent(collectd.%(host)s.tail.access_log_all.status.{206,[3-5]*},collectd.%(host)s.tail.access_log_all.status.total),5)'
 
 Apache_Access_All_Status_Bad:
     glob_verify: tail/access_log_all/status
@@ -52,7 +52,7 @@ Apache_Access_All_Status_Bad:
     vtitle: percent
     yMin: 0
     target:
-    - 'substr(sortByMaxima(scale(divideSeries(collectd.%(host)s.tail.access_log_all.status.[4-5]*,collectd.%(host)s.tail.access_log_all.status.total),100)),5)'
+    - 'substr(asPercent(collectd.%(host)s.tail.access_log_all.status.[4-5]*,collectd.%(host)s.tail.access_log_all.status.total),5)'
 
 
 
@@ -457,3 +457,20 @@ Varnish_Client:
     glob_verify: varnish/client
     target:
     - 'substr(sortByMaxima(collectd.%(host)s.varnish.client.*),4)'
+
+# Varnish Combined graphs (Tail graphs)
+Varnish_Combined_Status:
+    glob_verify: tail/varnish_combined/status
+    hideLegend: false
+    vtitle: percent
+    yMin: 0
+    target:
+    - 'substr(asPercent(collectd.%(host)s.tail.varnish_combined.status.{206,[3-5]*},collectd.%(host)s.tail.varnish_combined.status.total),5)'
+
+Varnish_Combined_Status_Bad:
+    glob_verify: tail/varnish_combined/status
+    hideLegend: false
+    vtitle: percent
+    yMin: 0
+    target:
+    - 'substr(asPercent(collectd.%(host)s.tail.varnish_combined.status.[4-5]*,collectd.%(host)s.tail.varnish_combined.status.total),5)'

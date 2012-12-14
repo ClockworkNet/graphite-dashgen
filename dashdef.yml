@@ -49,6 +49,8 @@ all:
     - Apache_Access_All_Response
     - Apache_Access_All_Status
     - Apache_Access_All_Status_Bad
+    - Varnish_Combined_Status
+    - Varnish_Combined_Status_Bad
     - NTP_Offset
     - Entropy
     - Users
