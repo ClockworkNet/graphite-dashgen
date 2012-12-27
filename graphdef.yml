@@ -203,65 +203,77 @@ Load:
 # Memcached graphs
 Memcached_Cache:
     areaAlpha: 0.8
+    areaMode: stacked
     glob_verify: memcached/cache
     yMin: 0
     target:
-    - 'substr(stacked(collectd.%(host)s.memcached.cache.used),4)'
-    - 'substr(color(stacked(collectd.%(host)s.memcached.cache.free),"%(color_free)s"),4)'
+    - 'aliasByMetric(collectd.%(host)s.memcached.cache.used)'
+    - 'aliasByMetric(color(collectd.%(host)s.memcached.cache.free,"%(color_free)s"))'
 
 Memcached_Items:
     glob_verify: memcached/items.wsp
     areaAlpha: 0.2
+    areaMode: stacked
     hideLegend: true
     yMin: 0
     target:
     - 'stacked(collectd.%(host)s.memcached.items)'
 
-Memcached_Commands_and_Ops:
+Memcached_Commands:
     glob_verify: memcached/command
     areaAlpha: 0.8
     areaMode: stacked
     hideLegend: false
     target:
-    - 'substr(sortByMinima(collectd.%(host)s.memcached.{command,ops}.*),4)'
+    - 'aliasByMetric(sortByMinima(collectd.%(host)s.memcached.command.*))'
 
-Memcached_Connections:
-    glob_verify: memcached/connections.wsp
-    areaAlpha: 0.2
-    hideLegend: true
-    yMin: 0
+Memcached_Ops:
+    glob_verify: memcached/command
+    areaAlpha: 0.8
+    areaMode: stacked
+    hideLegend: false
     target:
-    - 'stacked(collectd.%(host)s.memcached.connections)'
+    - 'aliasByMetric(sortByMinima(collectd.%(host)s.memcached.ops.*))'
 
 Memcached_Hit_Ratio:
     glob_metrics: memcached
     glob_verify: hitratio.wsp
-    areaAlpha: 0.2
-    hideLegend: true
+    areaAlpha: 0.8
+    areaMode: stacked
+    vtitle: percent
     yMax: 100
     yMin: 0
     target:
-    - 'stacked(collectd.%(host)s.memcached.hitratio)'
+    - 'substr(asPercent(collectd.memcache-a0.memcached.ops.{hits,misses}),4)'
+
+Memcached_Connections:
+    glob_verify: memcached/connections.wsp
+    areaAlpha: 0.2
+    areaMode: stacked
+    hideLegend: true
+    yMin: 0
+    target:
+    - 'collectd.%(host)s.memcached.connections'
 
 Memcached_Octets:
     glob_verify: memcached/octets
     yUnitSystem: binary
     target:
     - 'alias(color(sumSeries(collectd.%(host)s.memcached.octets.*),"%(color_combined)s"),"combined")'
-    - 'substr(collectd.%(host)s.memcached.octets.*,4)'
+    - 'aliasByMetric(collectd.%(host)s.memcached.octets.*)'
 
 Memcached_Processes:
     glob_verify: memcached/ps_count
     yMin: 0
     target:
-    - 'substr(collectd.%(host)s.memcached.ps_count.*,4)'
+    - 'aliasByMetric(collectd.%(host)s.memcached.ps_count.*)'
 
 Memcached_CPU_Time:
     glob_verify: memcached/ps_cputime
     areaAlpha: 0.8
     areaMode: stacked
     target:
-    - 'substr(sortByMinima(collectd.%(host)s.memcached.ps_cputime.*),4)'
+    - 'aliasByMetric(sortByMinima(collectd.%(host)s.memcached.ps_cputime.*))'
 
 
 # Memory graphs
