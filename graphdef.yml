@@ -219,13 +219,13 @@ Memcached_Items:
     target:
     - 'stacked(collectd.%(host)s.memcached.items)'
 
-Memcached_Commands:
+Memcached_Commands_and_Evictions:
     glob_verify: memcached/command
     areaAlpha: 0.8
-    areaMode: stacked
     hideLegend: false
     target:
-    - 'aliasByMetric(sortByMinima(collectd.%(host)s.memcached.command.*))'
+    - 'substr(stacked(sortByMinima(collectd.%(host)s.memcached.command.{set,get})),4)'
+    - 'lineWidth(aliasByMetric(sortByMinima(collectd.%(host)s.memcached.ops.evictions)),2)'
 
 Memcached_Ops:
     glob_verify: memcached/command
@@ -233,7 +233,7 @@ Memcached_Ops:
     areaMode: stacked
     hideLegend: false
     target:
-    - 'aliasByMetric(sortByMinima(collectd.%(host)s.memcached.ops.*))'
+    - 'aliasByMetric(sortByMinima(collectd.%(host)s.memcached.ops.{misses,hits}))'
 
 Memcached_Hit_Ratio:
     glob_metrics: memcached

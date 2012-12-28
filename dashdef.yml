@@ -14,7 +14,7 @@ all:
     - Apache_Scoreboard
     - Memcached_Cache
     - Memcached_Items
-    - Memcached_Commands
+    - Memcached_Commands_and_Evictions
     - Memcached_Ops
     - Memcached_Hit_Ratio
     - Memcached_Connections
