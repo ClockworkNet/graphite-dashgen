@@ -94,7 +94,7 @@ To Do
 Contributors
 ======================
 
-- https://github.com/TimBaldoni
+- https://github.com/TimZehta
 - https://github.com/insyte
 
 License
