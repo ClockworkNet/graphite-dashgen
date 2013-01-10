@@ -225,13 +225,14 @@ Memcached_Commands_and_Evictions:
     hideLegend: false
     target:
     - 'substr(stacked(sortByMinima(collectd.%(host)s.memcached.command.{set,get})),4)'
-    - 'lineWidth(aliasByMetric(sortByMinima(collectd.%(host)s.memcached.ops.evictions)),2)'
+    - 'lineWidth(aliasByMetric(collectd.%(host)s.memcached.ops.evictions),2)'
 
 Memcached_Ops:
     glob_verify: memcached/command
     areaAlpha: 0.8
     areaMode: stacked
     hideLegend: false
+    colorList: red,blue
     target:
     - 'aliasByMetric(sortByMinima(collectd.%(host)s.memcached.ops.{misses,hits}))'
 
