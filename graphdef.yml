@@ -466,6 +466,16 @@ Varnish_Cache:
     target:
     - 'substr(sortByMaxima(collectd.%(host)s.varnish.cache.*),4)'
 
+Varnish_Cache_Percent:
+    glob_verify: varnish/cache
+    areaAlpha: 0.8
+    areaMode: stacked
+    vtitle: percent
+    yMax: 100
+    yMin: 0
+    target:
+    - 'substr(sortByMaxima(asPercent(collectd.%(host)s.varnish.cache.{hit,miss,hitpass})),4)'
+
 Varnish_Client:
     glob_verify: varnish/client
     target:

@@ -7,6 +7,7 @@ all:
     - Carbon_Cache_Queues
     - Carbon_Cache_Queries
     - Varnish_Cache
+    - Varnish_Cache_Percent
     - Varnish_Client
     - Varnish_Backend
     - Apache_Bytes
