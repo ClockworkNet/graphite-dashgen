@@ -381,11 +381,10 @@ Postfix_Message_Size:
 
 Postfix_Queue_Size:
     glob_verify: postfix/queue_length
-    lineMode: connected
     yMin: 0
     target:
     - 'alias(sumSeries(collectd.%(host)s.postfix.queue_length.*),"total")'
-    - 'substr(collectd.%(host)s.postfix.queue_length.*,4)'
+    - 'aliasByMetric(collectd.%(host)s.postfix.queue_length.*)'
 
 Postfix_Outbound_Connections:
     glob_verify: tail/postfix/conn-out
