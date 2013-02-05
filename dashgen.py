@@ -228,9 +228,9 @@ def main():
         log.error("PROFILE must be specified")
 
     # read yaml configuration files
-    dashconf = yaml.load(open('%s/dashconf.yml' % opts.config_dir, 'r'))
-    dashdef = yaml.load(open('%s/dashdef.yml' % opts.config_dir, 'r'))
-    graphdef = yaml.load(open('%s/graphdef.yml' % opts.config_dir, 'r'))
+    dashconf = yaml.safe_load(open('%s/dashconf.yml' % opts.config_dir, 'r'))
+    dashdef = yaml.safe_load(open('%s/dashdef.yml' % opts.config_dir, 'r'))
+    graphdef = yaml.safe_load(open('%s/graphdef.yml' % opts.config_dir, 'r'))
     try:
         dash_profile = dashdef.pop(profile)
     except:
