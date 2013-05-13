@@ -10,7 +10,6 @@ defaults:
     width: 1000
     height: 300
     until: now
-    fontName: FreeMono
     interval: 60000
     enabled: false
     startTime: 8:00 AM
@@ -18,3 +17,4 @@ defaults:
     units: hours
     type: relative
     quantity: 1
+    format: svg

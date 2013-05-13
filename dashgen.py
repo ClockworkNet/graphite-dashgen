@@ -40,7 +40,7 @@ def dash_create(host, host_path, profile):
                 'height': defaults['height'],
                 'from': '-%s%s' % (defaults['quantity'], defaults['units']),
                 'until': defaults['until'],
-                'fontName': defaults['fontName'],
+                'format': defaults['format'],
                 },
             'refreshConfig': {
                 'interval': defaults['interval'],
