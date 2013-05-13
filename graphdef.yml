@@ -55,6 +55,39 @@ Apache_Access_All_Status_Bad:
     - 'substr(sortByMaxima(asPercent(collectd.%(host)s.tail.access_log_all.status.[4-5]*,collectd.%(host)s.tail.access_log_all.status.total)),5)'
 
 
+# APC graphs
+APC_Memory:
+    glob_verify: curl_json/apc/memory
+    areaAlpha: 0.8
+    areaMode: stacked
+    colorList: blue,red,green
+    yMin: 0
+    yUnitSystem: binary
+    target:
+    - 'aliasByMetric(collectd.%(host)s.curl_json.apc.memory.{cache-files,cache-user,cache-available})'
+
+APC_Ops:
+    glob_verify: curl_json/apc/cache_eviction
+    target:
+    - 'substr(asPercent(collectd.%(host)s.curl_json.apc.cache_operation.*),5)'
+    - 'aliasSub(substr(asPercent(collectd.%(host)s.curl_json.apc.cache_eviction.*),5),"^ops-","")'
+
+APC_Files_Ops_Percent:
+    glob_verify: curl_json/apc/cache_operation/files-hits.wsp
+    areaAlpha: 0.8
+    areaMode: stacked
+    vtitle: percent
+    target:
+    - 'aliasSub(substr(asPercent(collectd.%(host)s.curl_json.apc.cache_operation.{files-hits,files-misses}),5),"^files-","")'
+
+APC_User_Ops_Percent:
+    glob_verify: curl_json/apc/cache_operation/user-hits.wsp
+    areaAlpha: 0.8
+    areaMode: stacked
+    vtitle: percent
+    target:
+    - 'aliasSub(substr(asPercent(collectd.%(host)s.curl_json.apc.cache_operation.{user-hits,user-misses}),5),"^user-","")'
+
 
 # Carbon graphs
 Carbon_Cache_Avg_Update_Time:

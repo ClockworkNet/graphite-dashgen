@@ -13,6 +13,10 @@ all:
     - Apache_Bytes
     - Apache_Connections_and_Requests
     - Apache_Scoreboard
+    - APC_Memory
+    - APC_Ops
+    - APC_Files_Ops_Percent
+#    - APC_User_Ops_Percent
     - Memcached_Cache
     - Memcached_Items
     - Memcached_Commands_and_Evictions
