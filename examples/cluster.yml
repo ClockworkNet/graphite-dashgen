@@ -1,0 +1,146 @@
+
+dash:
+    type: per_group
+    name_prefix: group_quick_
+    groups:
+        Site_A:
+            apache_hosts: GLOB
+            apache_log_host: GLOB
+            mysql_host: GLOB
+            memcache_hosts: GLOB
+            storage_disk: GLOB
+            storage_host: GLOB
+            varnish_hosts: GLOB
+        Site_B:
+            apache_hosts: GLOB
+            apache_log_host: GLOB
+            mysql_host: GLOB
+            memcache_hosts: GLOB
+            storage_disk: GLOB
+            storage_host: GLOB
+            varnish_hosts: GLOB
+    defaults:
+        height: 200
+        quantity: 3
+    include:
+    - Access_All__Home_Responses_Avg
+    - Access_All__CSS_200_Responses_Avg
+    - Varnish_Requests_Received
+    - Apache_Requests
+    - MySQL_Threads
+    - Disk_Octets
+    - Varnish_Connections_Accepted
+    - Apache_Connections
+    - CPU_Apache_Hosts
+    - Load_Apache_Hosts
+    - Memory_Apache_Hosts
+    - Memcache_Ops
+    - Memcache_Commands
+    - MySQL_Queries
+
+graphs:
+    # Access graphs
+    Access_All__CSS_200_Responses_Avg:
+        hideLegend: false
+        rightDashed: 1
+        vtitle: ms
+        yMax: 5000
+        yMin: 0
+        target:
+        - 'cactiStyle(substr(scale(keepLastValue(collectd.${apache_log_host}.tail.access_log_all.{response,first_byte}.css_avg),0.001),4,5))'
+    Access_All__Home_Responses_Avg:
+        hideLegend: false
+        rightDashed: 1
+        vtitle: ms
+        yMax: 5000
+        yMin: 0
+        target:
+        - 'cactiStyle(substr(scale(collectd.${apache_log_host}.tail.access_log_all.{response,first_byte}.home_avg,0.001),4,5))'
+
+    # Apache
+    Apache_Connections:
+        areaAlpha: 0.8
+        areaMode: stacked
+        target:
+        - 'substr(sortByMinima(collectd.${apache_hosts}.apache.apache_connections),1,2)'
+    Apache_Requests:
+        areaAlpha: 0.8
+        areaMode: stacked
+        target:
+        - 'substr(sortByMinima(collectd.${apache_hosts}.apache.apache_requests),1,2)'
+
+    # CPU
+    CPU_Apache_Hosts:
+        title: ${apache_hosts}_CPU
+        areaAlpha: 0.8
+        areaMode: stacked
+        target:
+        - 'sortByMinima(maximumAbove(groupByNode(collectd.${apache_hosts}.cpu.*.{system,user,nice,wait,interrupt,softirq,steal},4,"sumSeries"),0.1))'
+        - 'color(groupByNode(collectd.${apache_hosts}.cpu.*.idle,4,"sumSeries"),"${color_free}")'
+
+    # Disk
+    Disk_Octets:
+        title: ${storage_host}_${metric}
+        yUnitSystem: binary
+        target:
+        - 'alias(color(sumSeries(collectd.${storage_host}.disk.${storage_disk}.octets.*),"${color_combined}"),"combined")'
+        - 'substr(collectd.${storage_host}.disk.${storage_disk}.octets.*,5)'
+
+    # Load
+    Load_Apache_Hosts:
+        title: ${apache_hosts}_Load
+        areaAlpha: 0.8
+        areaMode: stacked
+        target:
+        - 'substr(sortByMinima(collectd.${apache_hosts}.load.shortterm),1,2)'
+
+    # Memcache
+    Memcache_Commands:
+        title: ${memcache_hosts}_Commands
+        areaAlpha: 0.8
+        areaMode: stacked
+        colorList: '#64647d,#6464c8,blue,#960032,red,#fa0032'
+        target:
+        - 'aliasSub(collectd.${memcache_hosts}.memcached.command.get,"collectd\.([^.]*)\.memcached\.command\.(.*)","\1.\2")'
+        - 'aliasSub(collectd.${memcache_hosts}.memcached.command.set,"collectd\.([^.]*)\.memcached\.command\.(.*)","\1.\2")'
+    Memcache_Ops:
+        title: ${memcache_hosts}_Ops
+        areaAlpha: 0.8
+        areaMode: stacked
+        colorList: '#64647d,#6464c8,blue,#960032,red,#fa0032'
+        target:
+        - 'aliasSub(collectd.${memcache_hosts}.memcached.ops.hits,"collectd\.([^.]*)\.memcached\.ops\.(.*)","\1.\2")'
+        - 'aliasSub(collectd.${memcache_hosts}.memcached.ops.misses,"collectd\.([^.]*)\.memcached\.ops\.(.*)","\1.\2")'
+
+    # Memory
+    Memory_Apache_Hosts:
+        title: ${apache_hosts}_Memory
+        areaAlpha: 0.8
+        areaMode: stacked
+        target:
+        - 'groupByNode(collectd.${apache_hosts}.memory.{used,buffered,cached},3,"sumSeries")'
+        - 'color(groupByNode(collectd.${apache_hosts}.memory.free,3,"sumSeries"),"green")'
+
+    # MySQL
+    MySQL_Queries:
+        title: ${mysql_host}_MySQL_Queries
+        areaAlpha: 0.8
+        areaMode: stacked
+        target:
+        - 'aliasByMetric(sortByMinima(highestMax(collectd.${mysql_host}.mysql.collectd_mon.mysql_commands.*,6)))'
+    MySQL_Threads:
+        title: ${mysql_host}_MySQL_Threads
+        target:
+        - 'collectd.${mysql_host}.mysql.collectd_mon.threads.running'
+
+    # Varnish
+    Varnish_Connections_Accepted:
+        areaAlpha: 0.8
+        areaMode: stacked
+        target:
+        - 'substr(sortByMinima(collectd.${varnish_hosts}.varnish.client.conn),1,2)'
+    Varnish_Requests_Received:
+        areaAlpha: 0.8
+        areaMode: stacked
+        target:
+        - 'substr(sortByMinima(collectd.${varnish_hosts}.varnish.client.req),1,2)'
