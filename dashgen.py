@@ -17,8 +17,6 @@ import urllib
 # Third-party
 import yaml
 
-VERSION = '0.1.0'
-
 dashconf = {"defaults": dict()}
 graphsconf = dict()
 
