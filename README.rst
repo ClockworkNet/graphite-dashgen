@@ -1,17 +1,18 @@
 Overview
 =========
 
-Graphite-dashgen automates the creation of host dashboards based on existing
+Graphite-dashgen automates the creation of Graphite_ dashboards. It creates
+per-host or per-group dashboards based on YAML configuration files. The
+per-host host dashboards are designed to create dashboards on existing
 collectd_ metrics. Unlike most of the alternatives below, this project seeks to
-use existing Graphite_ 0.9.9+ code. It also allows the creation of grouped
-boards.
+use existing Graphite_ 0.9.9+ code.
 
 .. _collectd: http://www.collectd.org/
 .. _Graphite: http://graphite.wikidot.com/
 
 
-Crontab Example
-===============
+Example
+=======
 
 ::
 
@@ -27,48 +28,74 @@ Crontab Example
     # Regenerate all dashboards
     @daily /usr/local/sbin/dashgen.py -q -f /usr/local/etc/dashgen/dashconf.yml -f /usr/local/etc/dashgen/all_*.yml -H '*'
 
-Graph Definition Notes
-======================
+The crontab example above:
 
-- Target entries are as close to web GUI as possible to make it easier to go
-  back and forth
+1. Cleans-up old graphite logs
+2. Cleans-up old whisper databases
+3. Regenerates per-host dashboards using the following configuration files
+
+   A. dashconf.yml_: base configuration values
+   B. all_dash.yml_: per-host dashboard configuration (HOST_all dashboards)
+   C. all_graphs.yml_: per-host graph defintions for collectd metrics
+
+.. _dashconf.yml:
+   https://github.com/ClockworkNet/graphite-dashgen/blob/master/dashconf.yml
+.. _all_dash.yml:
+   https://github.com/ClockworkNet/graphite-dashgen/blob/master/all_dash.yml
+.. _all_graphs.yml:
+   https://github.com/ClockworkNet/graphite-dashgen/blob/master/all_graphs.yml
+
+
+Notes
+=====
+
+- YAML Configuration Files
+
+  - Target entries are as close to web GUI as possible to make it easier to go
+    back and forth
 
 - Dashboard Types
 
   1. Per-Host
   2. Per-Group
 
-- Per-Host Graph Types
+- Per-Host Graphs
 
-  1. Host Metrics: identified by ``glob_verify`` and may contain
-     ``glob_metrics``
-  2. Carbon Metrics: identified by ``carbon_match`` and host
+  - Types
 
-- String Templates: named substitutions draw from ``target_vars``. Graph
-  definitions that contain named substitutions not in `target_vars` are
-  skipped. Common `target_vars` include:
+    1. Host Metrics: identified by ``glob_verify`` and may contain
+       ``glob_metrics``
+    2. Carbon Metrics: identified by ``carbon_match`` and host
 
-  - ``${color_combined}``
-  - ``${color_free}``
-  - ``${host}``
-  - ``${metric}``
+  - The combination of ``glob_metrics`` and ``glob_verify`` should result in a
+    single filesystem glob match
 
-- The combination of ``glob_metrics`` and ``glob_verify`` should result in a
-  single filesystem glob match
+- String Templates
 
-- Lines drawn by graphite obscure the lines drawn before them. Z order is
-  important. Consequently, many of the graphs' metrics change color depending
-  on their values.
+  - Named substitutions draw from ``target_vars``. Graph
+    definitions that contain named substitutions not in `target_vars` are
+    skipped.
+  - Common `target_vars` include:
 
-- For graphs that feature a free metric (ex. memory), that free metric is
-  always green (green should not be included in the template's ``lineColor``)
+    - ``${color_combined}``
+    - ``${color_free}``
+    - ``${host}``
+    - ``${metric}``
+
+- Graphite Graph Tips and Tricks
+
+  - Lines drawn by graphite obscure the lines drawn before them. Z order is
+    important. Consequently, many of the graphs' metrics change color depending
+    on their values.
+  - For graphs that feature a free metric (ex. memory), that free metric is
+    always green (green should not be included in the template's ``lineColor``)
 
 
 Requirements
 =============
 
 - Graphite 0.9.9+
-- `PyYAML`_
+- `PyYAML`_ (Ubuntu package: `python-yaml`)
 
 .. _`PyYAML`: https://pypi.python.org/pypi/PyYAML/
 
@@ -112,7 +139,8 @@ Contributors
 License
 =======
 
-- LICENSE_ (`MIT License`_)
+- `LICENSE.txt`_ (`MIT License`_)
 
-.. _LICENSE: LICENSE
+.. _`LICENSE.txt`:
+   https://github.com/ClockworkNet/wtop/blob/master/LICENSE.txt
 .. _`MIT License`: http://www.opensource.org/licenses/MIT
