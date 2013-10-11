@@ -1,5 +1,5 @@
-include *.rst
 include *.py
+include *.rst
 include *.yml
-include examples/*
 include LICENSE.txt
+include examples/*

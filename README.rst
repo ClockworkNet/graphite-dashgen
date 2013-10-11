@@ -41,9 +41,9 @@ The crontab example above:
 .. _dashconf.yml:
    https://github.com/ClockworkNet/graphite-dashgen/blob/master/dashconf.yml
 .. _all_dash.yml:
-   https://github.com/ClockworkNet/graphite-dashgen/blob/master/all_dash.yml
+   https://github.com/ClockworkNet/graphite-dashgen/blob/master/examples/all_dash.yml
 .. _all_graphs.yml:
-   https://github.com/ClockworkNet/graphite-dashgen/blob/master/all_graphs.yml
+   https://github.com/ClockworkNet/graphite-dashgen/blob/master/examples/all_graphs.yml
 
 
 Notes
