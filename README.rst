@@ -17,12 +17,15 @@ Crontab Example
 
     # Graphite Maintenance
     # Delete stale Graphite data
-    @daily find /opt/graphite/storage/whisper/collectd/ -type f -mtime +90 -ls -delete
+    0   22  *   *   *   find /opt/graphite/storage/log/ -type f -mtime +180 -delete
+    0   22  *   *   *   find /opt/graphite/storage/whisper/collectd/ -type f -mtime +90 -delete
+    0   22  *   *   *   find /opt/graphite/storage/whisper/statsd/ -type f -mtime +90 -delete
     # Delete empty directories
-    @daily find /opt/graphite/storage/whisper/collectd/ -type d -empty -ls -delete
+    0   23  *   *   *   find /opt/graphite/storage/log/ -type d -empty -delete
+    0   23  *   *   *   find /opt/graphite/storage/whisper/collectd/ -type d -empty -delete
+    0   23  *   *   *   find /opt/graphite/storage/whisper/statsd/ -type d -empty -delete
     # Regenerate all dashboards
-    @daily /usr/local/sbin/dashgen.py -q -c /usr/local/etc/dashgen/ all '*'
-
+    @daily /usr/local/sbin/dashgen.py -q -f /usr/local/etc/dashgen/dashconf.yml -f /usr/local/etc/dashgen/all_*.yml -H '*'
 
 Graph Definition Notes
 ======================
@@ -30,20 +33,25 @@ Graph Definition Notes
 - Target entries are as close to web GUI as possible to make it easier to go
   back and forth
 
-- Graph Types
+- Dashboard Types
+
+  1. Per-Host
+  2. Per-Group
+
+- Per-Host Graph Types
 
   1. Host Metrics: identified by ``glob_verify`` and may contain
      ``glob_metrics``
   2. Carbon Metrics: identified by ``carbon_match`` and host
 
-- Available String Replacements:
+- String Templates: named substitutions draw from ``target_vars``. Graph
+  definitions that contain named substitutions not in `target_vars` are
+  skipped. Common `target_vars` include:
 
-  - ``%(color_combined)s``
-  - ``%(color_free)s``
-  - ``%(host)s``
-  - ``%(metric)s``
-
-    - Only available to Host Metric graphs
+  - ``${color_combined}``
+  - ``${color_free}``
+  - ``${host}``
+  - ``${metric}``
 
 - The combination of ``glob_metrics`` and ``glob_verify`` should result in a
   single filesystem glob match
@@ -70,7 +78,6 @@ To Do
 
 - More documentation!
 - Use templates with different ``colorList`` to easily differentiate graphs
-- use dash profile options before defaults
 - (?) should graphs be sorted by parent instead of children (ex. all disk
   ``vda`` graphs before any ``vdb`` graphs)
 
