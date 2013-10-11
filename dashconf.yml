@@ -1,10 +1,8 @@
 webapp_path: /opt/graphite/webapp
-whisper_path: /opt/graphite/storage/whisper
-source_glob: collectd
-color_combined: 2f4f4f
-color_free: green
-carbon_server: GRAPHITE_SERVER_FQDN
-carbon_match: GRAPHITE_SERVER_NAME
+
+target_vars:
+    color_combined: 2f4f4f
+    color_free: green
 
 defaults:
     width: 1000
