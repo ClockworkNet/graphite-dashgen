@@ -21,7 +21,7 @@ include:
 - APC_Memory
 - APC_Ops
 - APC_Files_Ops_Percent
-#    - APC_User_Ops_Percent
+#- APC_User_Ops_Percent
 - Memcached_Cache
 - Memcached_Items
 - Memcached_Commands_and_Evictions
