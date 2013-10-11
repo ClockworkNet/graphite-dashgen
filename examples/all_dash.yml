@@ -1,5 +1,7 @@
 type: per_host
 name_suffix: "_all"
+# The following two lines contain placeholders that must be replaced for the
+# carbon graphs to be generated.
 carbon_server: GRAPHITE_SERVER_FQDN
 carbon_match: GRAPHITE_SERVER_NAME
 source_glob: collectd

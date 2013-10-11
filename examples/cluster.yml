@@ -1,4 +1,5 @@
-
+# The GLOBs below are placeholders that must be replaced by Graphite globs that
+# match the appropriate servers in order for the graphs to be generated.
 dash:
     type: per_group
     name_prefix: group_quick_
