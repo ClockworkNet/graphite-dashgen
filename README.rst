@@ -142,5 +142,5 @@ License
 - `LICENSE.txt`_ (`MIT License`_)
 
 .. _`LICENSE.txt`:
-   https://github.com/ClockworkNet/wtop/blob/master/LICENSE.txt
+   https://github.com/ClockworkNet/graphite-dashgen/blob/master/LICENSE.txt
 .. _`MIT License`: http://www.opensource.org/licenses/MIT
