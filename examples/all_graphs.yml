@@ -69,14 +69,16 @@ APC_Memory:
 APC_Ops:
     glob_verify: curl_json/apc/cache_eviction
     target:
-    - 'substr(asPercent(collectd.${host}.curl_json.apc.cache_operation.*),5)'
-    - 'aliasSub(substr(asPercent(collectd.${host}.curl_json.apc.cache_eviction.*),5),"^ops-","")'
+    - 'substr(collectd.${host}.curl_json.apc.cache_operation.*,5)'
+    - 'aliasSub(substr(collectd.${host}.curl_json.apc.cache_eviction.*,5),"^ops-","")'
 
 APC_Files_Ops_Percent:
     glob_verify: curl_json/apc/cache_operation/files-hits.wsp
     areaAlpha: 0.8
     areaMode: stacked
     vtitle: percent
+    yMin: 0
+    yMax: 100
     target:
     - 'aliasSub(substr(asPercent(collectd.${host}.curl_json.apc.cache_operation.{files-hits,files-misses}),5),"^files-","")'
 
@@ -85,6 +87,8 @@ APC_User_Ops_Percent:
     areaAlpha: 0.8
     areaMode: stacked
     vtitle: percent
+    yMin: 0
+    yMax: 100
     target:
     - 'aliasSub(substr(asPercent(collectd.${host}.curl_json.apc.cache_operation.{user-hits,user-misses}),5),"^user-","")'
 
