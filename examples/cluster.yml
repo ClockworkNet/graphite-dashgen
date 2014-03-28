@@ -12,6 +12,9 @@ dash:
             storage_disk: GLOB
             storage_host: GLOB
             varnish_hosts: GLOB
+            ping_host: GLOB
+            ping_title: STRING
+            ping_ip: STRING
         Site_B:
             apache_hosts: GLOB
             apache_log_host: GLOB
@@ -20,6 +23,9 @@ dash:
             storage_disk: GLOB
             storage_host: GLOB
             varnish_hosts: GLOB
+            ping_host: GLOB
+            ping_title: STRING
+            ping_ip: STRING
     defaults:
         height: 200
         quantity: 3
@@ -38,25 +44,24 @@ dash:
     - Memcache_Ops
     - Memcache_Commands
     - MySQL_Queries
+    - Latency
 
 graphs:
     # Access graphs
     Access_All__CSS_200_Responses_Avg:
         hideLegend: false
-        rightDashed: 1
         vtitle: ms
-        yMax: 5000
+        yMax: 250
         yMin: 0
         target:
         - 'cactiStyle(substr(scale(keepLastValue(collectd.${apache_log_host}.tail.access_log_all.{response,first_byte}.css_avg),0.001),4,5))'
     Access_All__Home_Responses_Avg:
         hideLegend: false
-        rightDashed: 1
         vtitle: ms
-        yMax: 5000
+        yMax: 2000
         yMin: 0
         target:
-        - 'cactiStyle(substr(scale(collectd.${apache_log_host}.tail.access_log_all.{response,first_byte}.home_avg,0.001),4,5))'
+        - 'cactiStyle(substr(scale(keepLastValue(collectd.${apache_log_host}.tail.access_log_all.{response,first_byte}.home_avg),0.001),4,5))'
 
     # Apache
     Apache_Connections:
@@ -120,7 +125,7 @@ graphs:
         areaMode: stacked
         target:
         - 'groupByNode(collectd.${apache_hosts}.memory.{used,buffered,cached},3,"sumSeries")'
-        - 'color(groupByNode(collectd.${apache_hosts}.memory.free,3,"sumSeries"),"green")'
+        - 'color(groupByNode(collectd.${apache_hosts}.memory.free,3,"sumSeries"),"${color_free}")'
 
     # MySQL
     MySQL_Queries:
@@ -133,6 +138,15 @@ graphs:
         title: ${mysql_host}_MySQL_Threads
         target:
         - 'collectd.${mysql_host}.mysql.collectd_mon.threads.running'
+
+    # ping
+    Latency:
+        colorList: brown,blue,red
+        hideLegend: false
+        title: ${ping_title}
+        vtitle: ms
+        target:
+        - 'cactiStyle(substr(collectd.${ping_host}.ping.{droprate,stddev,ping}.${ping_ip},3,4))'
 
     # Varnish
     Varnish_Connections_Accepted:
