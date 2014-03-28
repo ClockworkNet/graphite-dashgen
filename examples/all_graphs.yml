@@ -389,6 +389,8 @@ NFS_Server:
 # NTPd graphs
 NTP_Offset:
     glob_verify: ntpd/time_offset
+    yMax: 1
+    yMin: -1
     target:
     # Limit reported hosts to first 4 IPs
     - 'aliasSub(aliasByMetric(limit(collectd.${host}.ntpd.time_offset.[0-9]*,4)),"-",".")'
