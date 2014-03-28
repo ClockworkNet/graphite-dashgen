@@ -11,6 +11,7 @@ import json
 import logging
 import logging.handlers
 import os
+import socket
 import string
 import sys
 import urllib
@@ -29,6 +30,12 @@ screenhdlr.setFormatter(screenfmt)
 # multiple log handlers
 log.handlers = list()
 log.addHandler(screenhdlr)
+
+# socket
+try:
+    socket.setdefaulttimeout(1)
+except:
+    pass
 
 
 def dash_create(dash_name):
@@ -73,6 +80,18 @@ def dash_create(dash_name):
             },
             }
     return dash
+
+
+def resolve_name(graph, ip_str):
+    if ("resolve_metric" not in graphsconf[graph] or
+            not graphsconf[graph]["resolve_metric"]):
+        return ip_str
+    try:
+        ip = ip_str.replace("-", ".")
+        metric_resolved = socket.gethostbyaddr(ip)[0]
+        return metric_resolved.replace(".", "_")
+    except:
+        return ip_str
 
 
 def per_group_graph_create(group):
@@ -137,7 +156,9 @@ def per_host_graph_create(host, host_path):
                 del(graph_object["glob_verify"])
                 metric = os.path.basename(metric_path)
                 log.debug("    metric: %s" % metric)
-                target_vars.update({"host": host, "metric": metric})
+                metric_resolved = resolve_name(name, metric)
+                target_vars.update({"host": host, "metric": metric,
+                                    "metric_resolved": metric_resolved})
                 graph = graph_compile(name, graph_object, target_vars)
                 if len(graph) > 0:
                     graphs.append(graph)
@@ -290,18 +311,25 @@ def main():
                 # dash
                 if "dash" in file_dict:
                     dashconf = merge_dicts(dashconf, file_dict["dash"])
+                    log.debug("Merged Dash     configuration from: %s" %
+                              conf_file)
                     del file_dict["dash"]
                 # defaults
                 if "defaults" in file_dict:
                     dashconf["defaults"] = merge_dicts(dashconf["defaults"],
                                                        file_dict["defaults"])
+                    log.debug("Merged Defaults configuration from: %s" %
+                              conf_file)
                     del file_dict["defaults"]
                 # graphs
                 if "graphs" in file_dict:
                     graphsconf = merge_dicts(graphsconf, file_dict["graphs"])
+                    log.debug("Merged Graphs   configuration from: %s" %
+                              conf_file)
                     del file_dict["graphs"]
                 # dash
                 dashconf = merge_dicts(dashconf, file_dict)
+                log.debug("Merged Dash     configuration from: %s" % conf_file)
     if not dashconf:
         log.error("No dash definition found. A configuration file containing "
                   "a dash definition must be loaded.")

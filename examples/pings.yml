@@ -1,0 +1,20 @@
+dash:
+    type: per_host
+    name_suffix: _pings
+    source_glob: collectd
+    whisper_path: /opt/graphite/storage/whisper
+    defaults:
+        quantity: 3
+    include:
+    - Ping
+graphs:
+    Ping:
+        title: ${metric_resolved}
+        glob_metrics: ping/*
+        glob_verify: .
+        resolve_metric: true
+        colorList: red,brown,blue
+        hideLegend: false
+        vtitle: ms
+        target:
+        - 'cactiStyle(aliasByMetric(collectd.${host}.ping.${metric}.{droprate,stddev,ping}))'

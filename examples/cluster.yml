@@ -146,7 +146,7 @@ graphs:
         title: ${ping_title}
         vtitle: ms
         target:
-        - 'cactiStyle(substr(collectd.${ping_host}.ping.{droprate,stddev,ping}.${ping_ip},3,4))'
+        - 'cactiStyle(aliasByMetric(collectd.${ping_host}.ping.${ping_ip}.{droprate,stddev,ping}))'
 
     # Varnish
     Varnish_Connections_Accepted:
