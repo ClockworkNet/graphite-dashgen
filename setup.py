@@ -25,5 +25,5 @@ setup(author="Timid Robot Zehta",
       name="python-graphite-dashgen",
       py_modules=["dashgen"],
       url="https://github.com/ClockworkNet/graphite-dashgen",
-      version="0.1.1",
+      version="0.1.2",
       )
