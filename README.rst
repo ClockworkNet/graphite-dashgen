@@ -38,12 +38,16 @@ The crontab example above:
    B. all_dash.yml_: per-host dashboard configuration (HOST_all dashboards)
    C. all_graphs.yml_: per-host graph defintions for collectd metrics
 
+See additional example configures in `examples/`_.
+
 .. _dashconf.yml:
    https://github.com/ClockworkNet/graphite-dashgen/blob/master/dashconf.yml
 .. _all_dash.yml:
    https://github.com/ClockworkNet/graphite-dashgen/blob/master/examples/all_dash.yml
 .. _all_graphs.yml:
    https://github.com/ClockworkNet/graphite-dashgen/blob/master/examples/all_graphs.yml
+.. _`examples/`:
+   https://github.com/ClockworkNet/graphite-dashgen/tree/master/examples
 
 
 Notes
@@ -81,6 +85,7 @@ Notes
     - ``${color_free}``
     - ``${host}``
     - ``${metric}``
+    - ``${metric_resolved}``
 
 - Graphite Graph Tips and Tricks
 
