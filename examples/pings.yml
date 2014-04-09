@@ -12,9 +12,14 @@ graphs:
         title: ${metric_resolved}
         glob_metrics: ping/*
         glob_verify: .
+        areaAlpha: 0.2
         resolve_metric: true
         colorList: red,brown,blue
         hideLegend: false
         vtitle: ms
+        vtitleRight: percent
+        yMinRight: 0
+        yMaxRight: 100
         target:
-        - 'cactiStyle(aliasByMetric(collectd.${host}.ping.${metric}.{droprate,stddev,ping}))'
+        - 'cactiStyle(substr(secondYAxis(stacked(asPercent(collectd.${host}.ping.${metric}.droprate,1))),4,5))'
+        - 'cactiStyle(aliasByMetric(collectd.${host}.ping.${metric}.{stddev,ping}))'

@@ -141,12 +141,17 @@ graphs:
 
     # ping
     Latency:
-        colorList: brown,blue,red
-        hideLegend: false
         title: ${ping_title}
+        areaAlpha: 0.2
+        colorList: red,brown,blue
+        hideLegend: false
         vtitle: ms
+        vtitleRight: percent
+        yMinRight: 0
+        yMaxRight: 100
         target:
-        - 'cactiStyle(aliasByMetric(collectd.${ping_host}.ping.${ping_ip}.{droprate,stddev,ping}))'
+        - 'cactiStyle(substr(secondYAxis(stacked(asPercent(collectd.${ping_host}.ping.${ping_ip}.droprate,1))),4,5))'
+        - 'cactiStyle(aliasByMetric(collectd.${ping_host}.ping.${ping_ip}.{stddev,ping}))'
 
     # Varnish
     Varnish_Connections_Accepted:
