@@ -89,7 +89,6 @@ def resolve_name(graph, ip_str):
     try:
         ip = ip_str.replace("-", ".")
         metric_resolved = socket.gethostbyaddr(ip)[0]
-        del graphsconf[graph]["resolve_metric"]
         return metric_resolved.replace(".", "_")
     except:
         return ip_str
@@ -157,7 +156,10 @@ def per_host_graph_create(host, host_path):
                 del(graph_object["glob_verify"])
                 metric = os.path.basename(metric_path)
                 log.debug("    metric: %s" % metric)
+
                 metric_resolved = resolve_name(name, metric)
+                del graph_object["resolve_metric"]
+
                 target_vars.update({"host": host, "metric": metric,
                                     "metric_resolved": metric_resolved})
                 graph = graph_compile(name, graph_object, target_vars)
