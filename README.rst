@@ -26,7 +26,7 @@ Example
     0   23  *   *   *   find /opt/graphite/storage/whisper/collectd/ -type d -empty -delete
     0   23  *   *   *   find /opt/graphite/storage/whisper/statsd/ -type d -empty -delete
     # Regenerate all dashboards
-    @daily /usr/local/sbin/dashgen.py -q -f /usr/local/etc/dashgen/dashconf.yml -f /usr/local/etc/dashgen/all_*.yml -H '*'
+    @daily /usr/bin/python -m dashgen -q -f /usr/local/etc/dashgen/dashconf.yml -f /usr/local/etc/dashgen/all_*.yml -H '*'
 
 The crontab example above:
 
@@ -128,10 +128,10 @@ The following projects existed before Graphite included a dashboard view:
 - `Graphiti <https://github.com/paperlesspost/graphiti>`_
 - `Tattle <https://github.com/wayfair/Graphite-Tattle>`_
 
-The Graphite 0.9.12 documentation includes a good list of related software:
+The Graphite latest documentation includes a good list of related software:
 
 - `Tools That Work With Graphite
-  <http://graphite.readthedocs.org/en/0.9.12/tools.html>`_
+  <http://graphite.readthedocs.org/en/latest/tools.html>`_
 
 
 Contributors
