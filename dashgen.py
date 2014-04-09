@@ -89,6 +89,7 @@ def resolve_name(graph, ip_str):
     try:
         ip = ip_str.replace("-", ".")
         metric_resolved = socket.gethostbyaddr(ip)[0]
+        del graphsconf[graph]["resolve_metric"]
         return metric_resolved.replace(".", "_")
     except:
         return ip_str
