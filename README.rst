@@ -77,9 +77,9 @@ Notes
 - String Templates
 
   - Named substitutions draw from ``target_vars``. Graph
-    definitions that contain named substitutions not in `target_vars` are
+    definitions that contain named substitutions not in ``target_vars`` are
     skipped.
-  - Common `target_vars` include:
+  - Common ``target_vars`` include:
 
     - ``${color_combined}``
     - ``${color_free}``
@@ -95,7 +95,7 @@ Notes
   - For graphs that feature a free metric (ex. memory), that free metric is
     always green (green should not be included in the template's ``lineColor``)
   - If you get your metrics from collectd, they are overly verbose and poorly
-    organized for Graphite globbing. For an example `rewrite-rules.conf` see:
+    organized for Graphite globbing. For an example rewrite-rules.conf see:
 
     - `TimZehta / rewrite-rules.conf
       <https://gist.github.com/TimZehta/1353415#file-rewrite-rules-conf>`_
@@ -105,7 +105,7 @@ Requirements
 =============
 
 - Graphite 0.9.9+
-- `PyYAML`_ (Ubuntu package: `python-yaml`)
+- `PyYAML`_ (Ubuntu package: python-yaml)
 
 .. _`PyYAML`: https://pypi.python.org/pypi/PyYAML/
 
