@@ -94,6 +94,11 @@ Notes
     on their values.
   - For graphs that feature a free metric (ex. memory), that free metric is
     always green (green should not be included in the template's ``lineColor``)
+  - If you get your metrics from collectd, they are overly verbose and poorly
+    organized for Graphite globbing. For an example `rewrite-rules.conf` see:
+
+    - `TimZehta / rewrite-rules.conf
+      <https://gist.github.com/TimZehta/1353415#file-rewrite-rules-conf>`_
 
 
 Requirements
@@ -117,18 +122,12 @@ To Do
 Alternatives
 ============
 
-A slightly different (and refreshing) take on Graphite dashboards:
+There are many alternatives and many of them were created before Graphite
+included a dashboard view. One of the most exciting projects is:
 
-- `Tasseo <https://github.com/obfuscurity/tasseo>`_
+- `Grafana <http://grafana.org/>`_
 
-The following projects existed before Graphite included a dashboard view:
-
-- `Etsy Dashboards <https://github.com/etsy/dashboard>`_
-- `GDash <https://github.com/ripienaar/gdash>`_
-- `Graphiti <https://github.com/paperlesspost/graphiti>`_
-- `Tattle <https://github.com/wayfair/Graphite-Tattle>`_
-
-The Graphite latest documentation includes a good list of related software:
+For additional alternatives see the lastest Graphite Tools documentation:
 
 - `Tools That Work With Graphite
   <http://graphite.readthedocs.org/en/latest/tools.html>`_
