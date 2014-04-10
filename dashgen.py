@@ -158,7 +158,8 @@ def per_host_graph_create(host, host_path):
                 log.debug("    metric: %s" % metric)
 
                 metric_resolved = resolve_name(name, metric)
-                del graph_object["resolve_metric"]
+                if "resolve_metric" in graph_object:
+                    del graph_object["resolve_metric"]
 
                 target_vars.update({"host": host, "metric": metric,
                                     "metric_resolved": metric_resolved})
