@@ -4,6 +4,7 @@ metrics (per_host) or variables (per_group).
 """
 # Standard library
 import argparse
+import copy
 from datetime import date
 import glob
 from itertools import chain
@@ -105,7 +106,8 @@ def per_group_graph_create(group):
             log.error("%s not found in graphs configuration" % name)
             continue
         else:
-            target_vars = dashconf["target_vars"]
+            # use deepcopy as later target_vars updates are per group
+            target_vars = copy.deepcopy(dashconf["target_vars"])
             target_vars.update(dashconf["groups"][group])
             target_vars.update({"metric": name})
             graph_object = dict(graphsconf[name])
@@ -125,7 +127,8 @@ def per_host_graph_create(host, host_path):
             log.error("%s not found in graphs configuration" % name)
             continue
         graph = list()
-        target_vars = dashconf["target_vars"]
+        # use deepcopy as later target_vars updates are per host
+        target_vars = copy.deepcopy(dashconf["target_vars"])
         # Graph Type #1: Host Metrics
         #   Identified by filesytem globbing
         if "glob_verify" in graphsconf[name]:
@@ -308,7 +311,7 @@ def main():
             # graphs only configs
             elif conf_root.endswith("_graphs"):
                 graphsconf = merge_dicts(graphsconf,
-                                       yaml.safe_load(open(conf_path)))
+                                         yaml.safe_load(open(conf_path)))
             # combined configs
             else:
                 file_dict = yaml.safe_load(open(conf_path))
